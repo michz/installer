@@ -26,7 +26,7 @@ provider "openstack" {
 module "service" {
   source = "./service"
 
-  swift_container   = "${openstack_objectstorage_container_v1.container.name}"
+  #swift_container   = "${openstack_objectstorage_container_v1.container.name}"
   cluster_id        = "${var.cluster_id}"
   cluster_domain    = "${var.cluster_domain}"
   image_name        = "${var.openstack_base_image}"
@@ -38,12 +38,13 @@ module "service" {
   master_ips        = "${module.topology.master_ips}"
   master_port_names = "${module.topology.master_port_names}"
   bootstrap_ip      = "${module.topology.bootstrap_port_ip}"
+  ignition_webserver_host = var.ignition_webserver_host
 }
 
 module "bootstrap" {
   source = "./bootstrap"
 
-  swift_container     = "${openstack_objectstorage_container_v1.container.name}"
+  #swift_container     = "${openstack_objectstorage_container_v1.container.name}"
   cluster_id          = "${var.cluster_id}"
   cluster_domain      = "${var.cluster_domain}"
   image_name          = "${var.openstack_base_image}"
@@ -51,6 +52,7 @@ module "bootstrap" {
   ignition            = "${var.ignition_bootstrap}"
   bootstrap_port_id   = "${module.topology.bootstrap_port_id}"
   service_vm_fixed_ip = "${module.topology.service_vm_fixed_ip}"
+  ignition_webserver_host = var.ignition_webserver_host
 }
 
 module "masters" {
@@ -81,13 +83,13 @@ module "topology" {
   trunk_support       = "${var.openstack_trunk_support}"
 }
 
-resource "openstack_objectstorage_container_v1" "container" {
-  name = "${var.cluster_id}"
-
-  # "kubernetes.io/cluster/${var.cluster_id}" = "owned"
-  metadata = "${merge(map(
-    "Name", "${var.cluster_id}-ignition-master",
-
-    "openshiftClusterID", "${var.cluster_id}"
-  ), var.openstack_extra_tags)}"
-}
+#resource "openstack_objectstorage_container_v1" "container" {
+#  name = "${var.cluster_id}"
+#
+#  # "kubernetes.io/cluster/${var.cluster_id}" = "owned"
+#  metadata = "${merge(map(
+#    "Name", "${var.cluster_id}-ignition-master",
+#
+#    "openshiftClusterID", "${var.cluster_id}"
+#  ), var.openstack_extra_tags)}"
+#}

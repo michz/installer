@@ -260,3 +260,7 @@ variable "openstack_trunk_support" {
 Contains 0 if the OpenStack Neutron trunk extension is disabled and 1 if it is enabled.
 EOF
 }
+
+variable "ignition_webserver_host" {
+  type = string
+}

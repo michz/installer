@@ -1,19 +1,19 @@
-resource "openstack_objectstorage_object_v1" "ignition" {
-  container_name = "${var.swift_container}"
-  name           = "bootstrap.ign"
-  content        = "${var.ignition}"
-}
-
-resource "openstack_objectstorage_tempurl_v1" "ignition_tmpurl" {
-  container = "${var.swift_container}"
-  method    = "get"
-  object    = "${openstack_objectstorage_object_v1.ignition.name}"
-  ttl       = 3600
-}
+#resource "openstack_objectstorage_object_v1" "ignition" {
+#  container_name = "${var.swift_container}"
+#  name           = "bootstrap.ign"
+#  content        = "${var.ignition}"
+#}
+#
+#resource "openstack_objectstorage_tempurl_v1" "ignition_tmpurl" {
+#  container = "${var.swift_container}"
+#  method    = "get"
+#  object    = "${openstack_objectstorage_object_v1.ignition.name}"
+#  ttl       = 3600
+#}
 
 data "ignition_config" "redirect" {
   append {
-    source = "${openstack_objectstorage_tempurl_v1.ignition_tmpurl.url}"
+    source = "http://${var.ignition_webserver_host}/bootstrap.ign"
   }
 
   files = [
