@@ -288,3 +288,6 @@ EOF
 
 }
 
+variable "ignition_webserver_host" {
+  type = string
+}
