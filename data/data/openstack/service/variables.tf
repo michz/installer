@@ -3,10 +3,10 @@ variable "image_name" {
   description = "The name of the Glance image for the bootstrap node."
 }
 
-variable "swift_container" {
-  type        = string
-  description = "The Swift container name for bootstrap ignition file."
-}
+#variable "swift_container" {
+#  type        = string
+#  description = "The Swift container name for bootstrap ignition file."
+#}
 
 variable "cluster_id" {
   type        = string
@@ -55,3 +55,6 @@ variable "lb_floating_ip" {
   type = string
 }
 
+variable "ignition_webserver_host" {
+  type = string
+}

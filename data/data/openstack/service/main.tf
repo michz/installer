@@ -262,22 +262,22 @@ data "ignition_user" "core" {
   name = "core"
 }
 
-resource "openstack_objectstorage_object_v1" "service_ignition" {
-  container_name = var.swift_container
-  name           = "load-balancer.ign"
-  content        = var.ignition
-}
+# resource "openstack_objectstorage_object_v1" "service_ignition" {
+#   container_name = var.swift_container
+#   name           = "load-balancer.ign"
+#   content        = var.ignition
+# }
 
-resource "openstack_objectstorage_tempurl_v1" "service_ignition_tmpurl" {
-  container = var.swift_container
-  method    = "get"
-  object    = openstack_objectstorage_object_v1.service_ignition.name
-  ttl       = 3600
-}
+# resource "openstack_objectstorage_tempurl_v1" "service_ignition_tmpurl" {
+#   container = var.swift_container
+#   method    = "get"
+#   object    = openstack_objectstorage_object_v1.service_ignition.name
+#   ttl       = 3600
+# }
 
 data "ignition_config" "service_redirect" {
   append {
-    source = openstack_objectstorage_tempurl_v1.service_ignition_tmpurl.url
+    source = "http://${var.ignition_webserver_host}/load-balancer.ign"
   }
 
   files = [
@@ -317,4 +317,3 @@ resource "openstack_compute_instance_v2" "load_balancer" {
     openshiftClusterID = var.cluster_id
   }
 }
-
