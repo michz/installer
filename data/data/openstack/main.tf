@@ -25,7 +25,7 @@ provider "openstack" {
 module "service" {
   source = "./service"
 
-  swift_container   = openstack_objectstorage_container_v1.container.name
+  #swift_container   = openstack_objectstorage_container_v1.container.name
   cluster_id        = var.cluster_id
   cluster_domain    = var.cluster_domain
   image_name        = var.openstack_base_image
@@ -42,7 +42,7 @@ module "service" {
 module "bootstrap" {
   source = "./bootstrap"
 
-  swift_container     = openstack_objectstorage_container_v1.container.name
+  #swift_container     = openstack_objectstorage_container_v1.container.name
   cluster_id          = var.cluster_id
   cluster_domain      = var.cluster_domain
   image_name          = var.openstack_base_image
@@ -83,16 +83,15 @@ module "topology" {
   trunk_support       = var.openstack_trunk_support
 }
 
-resource "openstack_objectstorage_container_v1" "container" {
-  name = var.cluster_id
+# resource "openstack_objectstorage_container_v1" "container" {
+#   name = var.cluster_id
 
-  # "kubernetes.io/cluster/${var.cluster_id}" = "owned"
-  metadata = merge(
-    {
-      "Name"               = "${var.cluster_id}-ignition-master"
-      "openshiftClusterID" = var.cluster_id
-    },
-    var.openstack_extra_tags,
-  )
-}
-
+#   # "kubernetes.io/cluster/${var.cluster_id}" = "owned"
+#   metadata = merge(
+#     {
+#       "Name"               = "${var.cluster_id}-ignition-master"
+#       "openshiftClusterID" = var.cluster_id
+#     },
+#     var.openstack_extra_tags,
+#   )
+# }
